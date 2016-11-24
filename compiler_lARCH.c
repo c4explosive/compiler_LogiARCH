@@ -23,6 +23,24 @@ void asignacion_ins()
 	    "JR",
 	    "SPC"
     };
+    char forms[N][5]={
+	    "IOOO",
+	    "IOOO",
+	    "IOOO",
+	    "IOOO", //t1
+	    "IOOX", 
+	    "IOOX", //t2
+	    "IXOO",
+	    "IXOO",
+	    "IXOO", //t3
+	    "IOOX", //t4
+	    "IOE",
+	    "IOE", //t5
+	    "IXE",
+	    "IXE", //t6
+	    "IXOX", //t7
+	    "IOXX" //t8
+    };
     int hex_codes[N]={
 	    0x0,
 	    0x01,
@@ -66,6 +84,7 @@ void asignacion_ins()
     	sprintf(insn[i].inst,"%s",nmonicos[i]);
     	insn[i].hex_code=hex_codes[i];
     	insn[i].warguments=wargsm[i];
+	sprintf(insn[i].format,"%s",forms[i]);
     }
 
     

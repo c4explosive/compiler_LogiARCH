@@ -4,6 +4,7 @@ typedef struct instruct
     char inst[3];
     int hex_code;
     int warguments;
+    char format[5];
 } instruction;
 
 
@@ -41,8 +42,8 @@ void print_nmonics()
 {
    int i;
    for (i=0;i<N;i++)
-   	printf("%s\t%1X\t%1d\n",insn[i].inst,
-			insn[i].hex_code,insn[i].warguments);
+   	printf("%s\t%1X\t%1d\t%s\n",insn[i].inst,
+			insn[i].hex_code,insn[i].warguments, insn[i].format);
 
 }
 
