@@ -49,7 +49,7 @@ char is_O_E(const char * string)
 	return '?';
 }
 
-int get_register_nums(const char * string)
+char get_register_nums(const char * string)
 {
     if( strcmp(string,"R1") == 0)
 	return '1';
@@ -146,10 +146,46 @@ void check_if_has_syntaxe()
 	   sprintf(formM,"");
 
 	}
-	printf("Aqui no hay errores.");	
+	printf("Aquí no hay errores.\n");	
 
 }
-void translate(const char string)
+
+void translate()
 {
+    char ** traduction=arraystring_init(traduction,1,5);
+    sprintf(traduction[0],"");
+    int i,k,h;
+    h=1;
+    char theformins[5];
+    char theletter;
+    for(i=0;i<=Nlines;i++)
+    {
+	sprintf(traduction[0],"%s%X",traduction[0],insn[get_code(linfilT[i].words[0])].hex_code);
+	sprintf(theformins,insn[get_code(linfilT[i].words[0])].format);
+	printf("FORM_INS::: %s\n",theformins);
+	for(k=0;k<strlen(theformins);k++)
+	{
+	    theletter=theformins[k];
+	    if(theletter=='O')
+	    {
+		sprintf(traduction[0],"%s%c",traduction[0],get_register_nums(linfilT[i].words[h]));
+		h++;
+	    }
+	    else if(theletter=='E')
+	    {
+		sprintf(traduction[0],"%s%X",traduction[0],atoi(linfilT[i].words[h]));
+		h++;
+	    }
+	    else if(theletter=='X')
+	    {
+		sprintf(traduction[0],"%s%d",traduction[0],0);
+	    }
+	}
+	printf("OVERDRIVE::: %s\n",traduction[0]);
+	h=1;
+	k=1;
+	sprintf(theformins,"");
+	sprintf(traduction[0],"");
+    }
 
 }

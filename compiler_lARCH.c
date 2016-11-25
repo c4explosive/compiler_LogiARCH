@@ -24,22 +24,22 @@ void asignacion_ins()
 	    "SPC"
     };
     char forms[N][5]={
-	    "IOOO",
-	    "IOOO",
-	    "IOOO",
-	    "IOOO", //t1
-	    "IOOX", 
-	    "IOOX", //t2
-	    "IXOO",
-	    "IXOO",
-	    "IXOO", //t3
-	    "IOOX", //t4
-	    "IOE",
-	    "IOE", //t5
-	    "IXE",
-	    "IXE", //t6
-	    "IXOX", //t7
-	    "IOXX" //t8
+	    "OOO",
+	    "OOO",
+	    "OOO",
+	    "OOO", //t1
+	    "OOX", 
+	    "OOX", //t2
+	    "XOO",
+	    "XOO",
+	    "XOO", //t3
+	    "OOX", //t4
+	    "OE",
+	    "OE", //t5
+	    "XE",
+	    "XE", //t6
+	    "XOX", //t7
+	    "OXX" //t8
     };
     char uforms[N][6]={
 	    "OOO",
@@ -117,10 +117,11 @@ int main()
    //printf("Num of words: %d\n",count_words(":ADD 				R1 Rz"));
    int i;
    //printf("HT:: %s\n",*data);
-   view_line_data("  			LUI R15 0x45 						",0);
+   view_line_data("  			LUI R15 89 						",0);
    printf("\n");
    Nlines++;
-   view_line_data("SR R1 R4",1);
+   view_line_data("SLT R2 R1",1);
    check_if_has_syntaxe();
+   translate();
    return 0;
 }
