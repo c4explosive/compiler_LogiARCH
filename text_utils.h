@@ -10,10 +10,11 @@ typedef struct instruct
 typedef struct linesw
 {
     char words[10][5];
+    int line_number;
     int count;
 } linesfilter;
 
-
+int Nlines=0;
 instruction insn[N];
 linesfilter linfilT[0xFF];
 
@@ -95,23 +96,39 @@ void filter_ins(const char * string,char ** getstring)
 	    insOPt[0][j-1]='\0';
 	}
     *getstring=insOPt[0];
-    //printf("INS_FILTER:: %s\n",insOPt[0]);
 
 
 }
 
-void view_line_data(const char * string)
+void view_line_data(const char * string,int y)
 {
     int i;
+    int word=0;
+    int letter=0;
+    char caracter;
     char ** data=arraystring_init(data,1,34);
-    filter_ins("  			ADD 				R1 	R2    e3 w3 		j2				",data);
-    printf("DATA:: %s\n",*data);
-    printf("DATAi:: ");
+    filter_ins(string,data);
+    
+
     for(i=0;i<strlen(*data);i++)
-	    printf("0x%X ",data[0][i]);
-    printf("\n");
-    printf("LENs:: %d\n",strlen(*data));
-    //for(i=0;i<strlen(data)
+    {
+	    caracter=data[0][i];
+
+	    if(caracter != 0x20)
+	    {
+	    	linfilT[y].words[word][letter]=caracter;
+		letter++;
+	    }
+	    else
+	    {
+		letter=0;
+		word++;
+	    }
+    }
+    linfilT[y].count=word+1;
+
+    for(i=0;i<linfilT[y].count;i++)
+	    printf("word%d :: %s\n",i,linfilT[y].words[i]);
 }
 
 void print_nmonics()
