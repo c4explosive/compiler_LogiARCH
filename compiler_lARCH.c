@@ -41,6 +41,25 @@ void asignacion_ins()
 	    "IXOX", //t7
 	    "IOXX" //t8
     };
+    char uforms[N][6]={
+	    "IOOO",
+	    "IOOO",
+	    "IOOO",
+	    "IOOO", //t1
+	    "IOO", 
+	    "IOO", //t2
+	    "IOO",
+	    "IOO",
+	    "IOO", //t3
+	    "IOO", //t4
+	    "IOE",
+	    "IOE", //t5
+	    "IE",
+	    "IE", //t6
+	    "IO", //t7
+	    "IO" //t8
+    };
+
     int hex_codes[N]={
 	    0x0,
 	    0x01,
@@ -85,6 +104,7 @@ void asignacion_ins()
     	insn[i].hex_code=hex_codes[i];
     	insn[i].warguments=wargsm[i];
 	sprintf(insn[i].format,"%s",forms[i]);
+	sprintf(insn[i].uformat,"%s",uforms[i]);
     }
 
     
@@ -97,9 +117,10 @@ int main()
    //printf("Num of words: %d\n",count_words(":ADD 				R1 R2"));
    int i;
    //printf("HT:: %s\n",*data);
-   view_line_data("  			ADD 				R1 	R2    e3 w3 		j2				",0);
+   view_line_data("  			ADD 				R1 	R2    e3  						",0);
    printf("\n");
-   view_line_data("So R1 R4 3",1);
+   Nlines++;
+   view_line_data("SR R1 R4",1);
    check_if_has_syntaxe();
    return 0;
 }

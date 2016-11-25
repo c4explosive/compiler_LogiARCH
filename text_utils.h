@@ -5,6 +5,7 @@ typedef struct instruct
     int hex_code;
     int warguments;
     char format[5];
+    char uformat[6];
 } instruction;
 
 typedef struct linesw
