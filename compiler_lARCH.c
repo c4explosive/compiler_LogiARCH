@@ -42,22 +42,22 @@ void asignacion_ins()
 	    "IOXX" //t8
     };
     char uforms[N][6]={
-	    "IOOO",
-	    "IOOO",
-	    "IOOO",
-	    "IOOO", //t1
-	    "IOO", 
-	    "IOO", //t2
-	    "IOO",
-	    "IOO",
-	    "IOO", //t3
-	    "IOO", //t4
-	    "IOE",
-	    "IOE", //t5
-	    "IE",
-	    "IE", //t6
-	    "IO", //t7
-	    "IO" //t8
+	    "OOO",
+	    "OOO",
+	    "OOO",
+	    "OOO", //t1
+	    "OO", 
+	    "OO", //t2
+	    "OO",
+	    "OO",
+	    "OO", //t3
+	    "OO", //t4
+	    "OE",
+	    "OE", //t5
+	    "E",
+	    "E", //t6
+	    "O", //t7
+	    "O" //t8
     };
 
     int hex_codes[N]={
@@ -114,10 +114,10 @@ int main()
 {
    //create__write_archivo("dats.txt");
    asignacion_ins();
-   //printf("Num of words: %d\n",count_words(":ADD 				R1 R2"));
+   //printf("Num of words: %d\n",count_words(":ADD 				R1 Rz"));
    int i;
    //printf("HT:: %s\n",*data);
-   view_line_data("  			ADD 				R1 	R2    e3  						",0);
+   view_line_data("  			LUI R15 0x45 						",0);
    printf("\n");
    Nlines++;
    view_line_data("SR R1 R4",1);
