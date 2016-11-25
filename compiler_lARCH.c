@@ -110,18 +110,23 @@ void asignacion_ins()
     
 }
 
-int main()
+int main(int argc, char * argv[])
 {
+   
    //create__write_archivo("dats.txt");
    asignacion_ins();
-   //printf("Num of words: %d\n",count_words(":ADD 				R1 Rz"));
    int i;
-   //printf("HT:: %s\n",*data);
-   view_line_data("  			LUI R15 89 						",0);
+
+   /*view_line_data("  			LUI R15 89 						",0);
    printf("\n");
    Nlines++;
-   view_line_data("SLT R2 R1",1);
+   view_line_data("LI R3 253   ",1);*/
+
+   read_archivo(argv[1]);
+
+   put_fileheader();
    check_if_has_syntaxe();
    translate();
+   create__write_archivo(argv[2]);
    return 0;
 }

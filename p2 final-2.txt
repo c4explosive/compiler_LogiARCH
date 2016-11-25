@@ -1,0 +1,40 @@
+AA00	00 00			li r10 0        
+AB01    01 01           li r11 1      
+A000    02 02           li r0 0        //CONTADOR        CONTADOR=0
+A150	03 03			li r1 80       //DIVIDENDO
+A207	04 04			li r2 7        //DIVISOR
+A680	05 05			li r6 128      //Constante 7mo bit
+2316    06 06           and r3 r1 r6   //r3=r1&128        
+703A	07 07	        cmp r3 r10     //r3==0 ?
+D00A	08 08			bra sal1       //r3=0       SI  RESIDUO=O     
+A301	09 09			li r3 1        //r3=1       NO  RESIDUO=1
+371A	10 0A	sal1:	or r7 r1 r10   //r7=r1
+5170	11 0B			sl r1 r7       //r1=r1<<1       DIVIDENDO=DIVIDENDO<<1
+A400	12 0C	    	LI R4 0        //COCIENTE
+A8FE    13 0D   div:    li r8 254      //apagando bit 0 y 8
+371A    14 0E           or r7 r1 r10   //r7=r1
+2178    15 0F           and r1 r7 r8   //r1=r1&254      limpiando el high
+374A	16 10	    	or r7 r4 r10   //r7=r4           
+5470	17 11			sl r4 r7       //r4=r4<<1       COCIENTE=COCIENTE<<1
+1532	18 12			sub r5 r3 r2   //r5=r3-r2       TEMP=RESIDUO-DIVISOR
+60A5	19 13			slt r10 r5     //0>r5           IF (0>R5)
+D018	20 14			bra div1                    SI  negativo
+374A	21 15	        or r7 r4 r10   //r7=r4      NO  positivo
+047B    22 16           add r4 r7 r11  //r4=r4+1        COCIENTE=COCIENTE+1
+335A    23 17           or r3 r5 r10   //r3=r5          RESIDUO=TEMP                                                           
+370A    24 18   div1:   or r7 r0 r10   //r7=r0
+007B    25 19           add r0 r7 r11  // r0=r0+1       CONTADOR=CONTADOR+1
+A808    26 1A           li r8 8        //r8=8
+7008    27 1B           cmp r0 r8      //r0==8 ?        IF (CONTADOR==8)
+D027    28 1C           bra fin                     SI  termina el ciclo
+383A    29 1D           or r8 r3 r10   //r8=r3      
+5380    30 1E           sl r3 r8       //r7=r3<<1       RESIDUO=RESIDUO<<1
+2816    31 1F           and r8 r1 r6   //r8=r1&128
+708A    32 20           cmp r8 r10     //r8==0 ?
+D024	33 21	        bra sal2       //r3=r3+0    SI  RESIDUO=RESIDUO<<1
+373A    34 22           or r7 r3 r10   //r7=r3          
+037B	35 23			add r3 r7 r11  //r3=r3+1    NO  RESIDUO=RESIDUO<<1+DIVIDENDO>>7
+371A    36 24   sal2:   or r7 r1 r10   //r7=r1        
+5170    37 25           sl r1 r7       //r1=r1<<1       DIVIDENDO=DIVIDENDO<<1
+C00D    38 26           jmp div                     NO  sigue el ciclo  
+C027    39 27   fin:    jmp fin

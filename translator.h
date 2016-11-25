@@ -150,19 +150,26 @@ void check_if_has_syntaxe()
 
 }
 
+void put_fileheader()
+{
+    sprintf(data_inHEX,"v2.0 raw\n");
+}
+
 void translate()
 {
+    printf("Nlines:: %d\n",Nlines);
     char ** traduction=arraystring_init(traduction,1,5);
     sprintf(traduction[0],"");
-    int i,k,h;
+    int i,k,h,z;
     h=1;
     char theformins[5];
     char theletter;
+    char caractt;
     for(i=0;i<=Nlines;i++)
     {
 	sprintf(traduction[0],"%s%X",traduction[0],insn[get_code(linfilT[i].words[0])].hex_code);
 	sprintf(theformins,insn[get_code(linfilT[i].words[0])].format);
-	printf("FORM_INS::: %s\n",theformins);
+	//printf("FORM_INS::: %s\n",theformins);
 	for(k=0;k<strlen(theformins);k++)
 	{
 	    theletter=theformins[k];
@@ -173,7 +180,7 @@ void translate()
 	    }
 	    else if(theletter=='E')
 	    {
-		sprintf(traduction[0],"%s%X",traduction[0],atoi(linfilT[i].words[h]));
+		sprintf(traduction[0],"%s%2X",traduction[0],atoi(linfilT[i].words[h]));
 		h++;
 	    }
 	    else if(theletter=='X')
@@ -181,7 +188,17 @@ void translate()
 		sprintf(traduction[0],"%s%d",traduction[0],0);
 	    }
 	}
-	printf("OVERDRIVE::: %s\n",traduction[0]);
+
+	for(z=0;z<strlen(traduction[0]);z++)
+	{
+	    caractt=traduction[0][z];
+	    //printf("D%d:: 0x%X\n",z,caractt);
+	    if(caractt==0x20)
+		traduction[0][z]='0';
+	}
+	//printf("INSS::: %s\n",linfilT[i].words[0]);
+	//printf("OVERDRIVE::: %s\n",traduction[0]);
+	sprintf(data_inHEX,"%s %s",data_inHEX,traduction[0]);
 	h=1;
 	k=1;
 	sprintf(theformins,"");

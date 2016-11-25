@@ -15,7 +15,6 @@ typedef struct linesw
     int count;
 } linesfilter;
 
-int Nlines=0;
 instruction insn[N];
 linesfilter linfilT[0xFF];
 
@@ -128,8 +127,8 @@ void view_line_data(const char * string,int y)
     }
     linfilT[y].count=word+1;
 
-    for(i=0;i<linfilT[y].count;i++)
-	    printf("word%d :: %s\n",i,linfilT[y].words[i]);
+    /*for(i=0;i<linfilT[y].count;i++)
+	    printf("word%d :: %s\n",i,linfilT[y].words[i]);*/
 }
 
 void print_nmonics()
