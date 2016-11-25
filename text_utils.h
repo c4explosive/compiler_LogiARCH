@@ -38,6 +38,57 @@ int count_words(const char * string)
 
 }
 
+const char* filter_ins(const char * string)
+{
+    if(!strcmp(string,""))
+	return 0;
+    int cambios,i=0;
+    int palabras;
+    char anterior=0x20;
+    char caracter;
+    char insOPt[80];
+    int spccount=0;
+    int haveletter=0;
+    int j=0;
+
+    for(i=0;i<strlen(string);i++)
+    {
+	caracter=string[i];
+	if(caracter == 0x09)
+	    caracter=0x20;
+
+	if((caracter==0x20 && anterior==0x20 && haveletter==0))
+	{
+	     continue;
+	}
+	if((caracter==0x20 && i==strlen(string)-1))
+		break;
+
+	if ( caracter!=0x20)
+	{
+	    insOPt[j]=caracter;
+	    j++;
+	    haveletter=1;
+	    spccount=0;
+	}
+	else
+	{
+	    if(spccount<1)
+	    {
+		insOPt[j]=caracter;
+		spccount++;
+		j++;
+	    }
+
+	}
+    }
+
+    printf("INS_FILTER:: %s\n",insOPt);
+
+    return "NULL";
+
+}
+
 void print_nmonics()
 {
    int i;
