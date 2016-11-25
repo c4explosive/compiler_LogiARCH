@@ -94,8 +94,9 @@ int main()
 {
    //create__write_archivo("dats.txt");
    //asignacion_ins();
-   //printf("Num of words: %d\n",count_words("ADD 				R1 R2"));
-   filter_ins("   ADD 				R1 R2    e3 w3 		j2  ");
-   //print_nmonics();
+   //printf("Num of words: %d\n",count_words(":ADD 				R1 R2"));
+   int i;
+   //printf("HT:: %s\n",*data);
+   view_line_data("");
    return 0;
 }

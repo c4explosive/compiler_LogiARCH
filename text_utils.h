@@ -7,8 +7,15 @@ typedef struct instruct
     char format[5];
 } instruction;
 
+typedef struct linesw
+{
+    char words[10][5];
+    int count;
+} linesfilter;
+
 
 instruction insn[N];
+linesfilter linfilT[0xFF];
 
 int count_words(const char * string) 
 {
@@ -38,15 +45,16 @@ int count_words(const char * string)
 
 }
 
-const char* filter_ins(const char * string)
+void filter_ins(const char * string,char ** getstring)
 {
     if(!strcmp(string,""))
-	return 0;
+	return ;
     int cambios,i=0;
     int palabras;
     char anterior=0x20;
     char caracter;
-    char insOPt[80];
+    char ** insOPt= arraystring_init(insOPt,1,80);
+    i=0;
     int spccount=0;
     int haveletter=0;
     int j=0;
@@ -66,7 +74,7 @@ const char* filter_ins(const char * string)
 
 	if ( caracter!=0x20)
 	{
-	    insOPt[j]=caracter;
+	    insOPt[0][j]=caracter;
 	    j++;
 	    haveletter=1;
 	    spccount=0;
@@ -75,18 +83,35 @@ const char* filter_ins(const char * string)
 	{
 	    if(spccount<1)
 	    {
-		insOPt[j]=caracter;
+		insOPt[0][j]=caracter;
 		spccount++;
 		j++;
 	    }
 
 	}
     }
+    if(caracter==0x20)
+	{
+	    insOPt[0][j-1]='\0';
+	}
+    *getstring=insOPt[0];
+    //printf("INS_FILTER:: %s\n",insOPt[0]);
 
-    printf("INS_FILTER:: %s\n",insOPt);
 
-    return "NULL";
+}
 
+void view_line_data(const char * string)
+{
+    int i;
+    char ** data=arraystring_init(data,1,34);
+    filter_ins("  			ADD 				R1 	R2    e3 w3 		j2				",data);
+    printf("DATA:: %s\n",*data);
+    printf("DATAi:: ");
+    for(i=0;i<strlen(*data);i++)
+	    printf("0x%X ",data[0][i]);
+    printf("\n");
+    printf("LENs:: %d\n",strlen(*data));
+    //for(i=0;i<strlen(data)
 }
 
 void print_nmonics()

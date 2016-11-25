@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "memory_things.h"
 
 FILE * archivo;
 char datass[1000]="";
