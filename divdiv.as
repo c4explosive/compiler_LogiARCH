@@ -1,3 +1,4 @@
+ds: 
 li	r10	0
 li	r11	1
 li	r0	0

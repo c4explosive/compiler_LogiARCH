@@ -17,6 +17,12 @@ void check_if_has_syntaxe();
 void translate();
 void put_fileheader();
 int verificar_dosp();
+
+void col_line_ind();
+void col_line_emb();
+
+void ReadLBL();
+
 void read_lineBline()
 {
     int i,j;
@@ -39,15 +45,26 @@ void read_lineBline()
 	    j=0;
 	}
     }
+
+    if (!verificar_dosp())
+    	ReadLBL();
+    else
+	printf("Puede que haya una etiqueta\n");
+
+
+}
+
+
+void ReadLBL()
+{
+    int i;
     printf("NL:: %d\n",NL);
     	for(i=0;i<NL;i++)
     	{
-	    //printf("LLEGA AQUI\n");
-	    //printf("LINE %d:: %s\n",i,linebyline[i]);
-	   	view_line_data(linebyline[i],i);
-	   
+	   view_line_data(linebyline[i],i);
     	}
     	Nlines=NL-1;
+
 }
 
 
