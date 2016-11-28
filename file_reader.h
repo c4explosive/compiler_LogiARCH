@@ -37,6 +37,13 @@ void print_buffer_line()
 	    printf("Line %d: %s\n",i,linebyline[i]);
 }
 
+void where_lines_are_colons()
+{
+    int i;
+    for(i=0;i<NL;i++)
+
+}
+
 void read_lineBline()
 {
     int i,j;
