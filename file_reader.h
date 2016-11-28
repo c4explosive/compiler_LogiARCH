@@ -6,7 +6,7 @@
 
 FILE * archivo;
 char datass[10000]="";
-int whereAreColons[255];
+int whereAreColons[255][255];
 char linebyline[255][200];
 char data[28];
 char data_inHEX[10000];
@@ -40,7 +40,13 @@ void print_buffer_line()
 void where_lines_are_colons()
 {
     int i;
-    //for(i=0;i<NL;i++)
+    char * pch;
+    for(i=0;i<NL;i++)
+    {
+        pch=strchr(linebyline[i],0x3a);
+        whereAreColons[0][i]=i;
+        whereAreColons[1][i]=pch-linebyline[i];
+    }
 
 }
 

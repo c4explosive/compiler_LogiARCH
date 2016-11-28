@@ -31,9 +31,13 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="main.c">
+		<Unit filename="../compiler_lARCH.c">
 			<Option compilerVar="CC" />
 		</Unit>
+		<Unit filename="../file_reader.h" />
+		<Unit filename="../memory_things.h" />
+		<Unit filename="../text_utils.h" />
+		<Unit filename="../translator.h" />
 		<Extensions>
 			<code_completion />
 			<envvars />

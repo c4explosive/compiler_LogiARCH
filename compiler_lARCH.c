@@ -1,7 +1,7 @@
 #include "file_reader.h"
 #include "text_utils.h"
 #include "translator.h"
-
+void Null();
 void asignacion_ins()
 {
 
@@ -28,7 +28,7 @@ void asignacion_ins()
 	    "OOO",
 	    "OOO",
 	    "OOO", //t1
-	    "OOX", 
+	    "OOX",
 	    "OOX", //t2
 	    "XOO",
 	    "XOO",
@@ -46,7 +46,7 @@ void asignacion_ins()
 	    "OOO",
 	    "OOO",
 	    "OOO", //t1
-	    "OO", 
+	    "OO",
 	    "OO", //t2
 	    "OO",
 	    "OO",
@@ -107,12 +107,12 @@ void asignacion_ins()
 	sprintf(insn[i].uformat,"%s",uforms[i]);
     }
 
-    
+
 }
 
 int main(int argc, char * argv[])
 {
-   
+
    //create__write_archivo("dats.txt");
    asignacion_ins();
    int i;

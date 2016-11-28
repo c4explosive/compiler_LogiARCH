@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1480298040 source:c:\users\a-ero\files_org_a\compiler_larch.c
+1480300598 source:c:\users\a-ero\files_org_a\compiler_larch.c
 	"file_reader.h"
 	"text_utils.h"
 	"translator.h"
