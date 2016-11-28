@@ -40,7 +40,7 @@ void print_buffer_line()
 void where_lines_are_colons()
 {
     int i;
-    for(i=0;i<NL;i++)
+    //for(i=0;i<NL;i++)
 
 }
 
@@ -80,7 +80,7 @@ void read_lineBline()
 
 void choose_ind_emb()
 {
-    
+
 }
 
 void ReadLBL()
@@ -100,7 +100,7 @@ void read_archivo(const char data[])
     int ch;
     int i=0;
     archivo=fopen(data,"r");
-    
+
     while(1)
     {
     	ch=fgetc(archivo);
@@ -130,7 +130,7 @@ int verificar_dosp()
 		return 1;
     }
     return 0;
-}	
+}
 
 void create__write_archivo(const char arch[])
 {
