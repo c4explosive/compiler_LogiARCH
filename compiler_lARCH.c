@@ -123,9 +123,9 @@ int main(int argc, char * argv[])
    view_line_data("LI R3 253   ",1);*/
 
    read_archivo(argv[1]);
-   /*put_fileheader();
+   put_fileheader();
    check_if_has_syntaxe();
    translate();
-   create__write_archivo(argv[2]);*/
+   create__write_archivo(argv[2]);
    return 0;
 }

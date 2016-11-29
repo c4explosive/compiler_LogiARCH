@@ -83,7 +83,7 @@ char get_register_nums(const char * string)
 	return 'F';
     else if ( strcmp(string,"R0") == 0)
 	return 'O';
- 
+
 }
 
 
@@ -105,16 +105,21 @@ void check_if_has_syntaxe()
 		}
 	    if (!(isnmonic))
 	    {
-		printf("Error de sysntaxis encontrada. La palabra clave \"%s\" no es válida como nmónico, abortando...\n",
+		printf("Error de syntaxis encontrada. La palabra clave \"%s\" no es válida como nmónico, abortando...\n",
 				linfilT[i].words[0]);
 		printf("Línea: %d\n",i);
 		exit(1);
 	    }
 	    isnmonic=0;
 	}
+	int argNow;
+	int argDef;
 	for(i=0;i<=Nlines;i++)
 	{
-	      if (!(linfilT[i].count-1 == insn[get_code(linfilT[i].words[0])].warguments))
+	    argNow=linfilT[i].count-1;
+	    argDef=insn[get_code(linfilT[i].words[0])].warguments;
+          printf("DEBUG:: %d vs %d\n",argNow,argDef);
+	      if (!(argNow == argDef))
 	      {
 		   printf("Número de argumentos no validos en %s; abortando...\n",linfilT[i].words[0]);
 		   printf("Línea: %d\n",i);
@@ -130,7 +135,7 @@ void check_if_has_syntaxe()
 		formM[k]=typeA;
 		k++;
 		//printf("TYPE::: %c\n",typeA);
-	   					
+
 	   }
 	   formM[j-1]='\0';
 	   //printf("FORMM::: %s\n",formM);
@@ -146,7 +151,7 @@ void check_if_has_syntaxe()
 	   sprintf(formM,"");
 
 	}
-	printf("Aquí no hay errores.\n");	
+	printf("Aquí no hay errores.\n");
 
 }
 

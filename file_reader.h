@@ -7,6 +7,7 @@
 FILE * archivo;
 char datass[10000]="";
 int whereAreColons[255][255];
+int NumOfdots;
 char linebyline[255][200];
 char data[28];
 char data_inHEX[10000];
@@ -44,8 +45,19 @@ void where_lines_are_colons()
     for(i=0;i<NL;i++)
     {
         pch=strchr(linebyline[i],0x3a);
-        whereAreColons[0][i]=i;
-        whereAreColons[1][i]=pch-linebyline[i];
+        if(pch != NULL)
+        {
+            whereAreColons[0][i]=i;
+            whereAreColons[1][i]=pch-linebyline[i];
+            NumOfdots++;
+        }
+
+    }
+
+    //print the list of columns
+    for (i=0;i<NumOfdots;i++)
+    {
+        printf("LINE:: %d have colon in %d\n",whereAreColons[0][i],whereAreColons[1][i]);
     }
 
 }
@@ -58,27 +70,28 @@ void read_lineBline()
     printf("RBL: %d\n",strlen(datass));
     for(i=0;i<strlen(datass);i++)
     {
-	caracter=datass[i];
-	if(caracter != 0xa)
-	{
+        caracter=datass[i];
+        if(caracter != '\n')
+        {
 	    //printf("chart::: %c\n",toupper(caracter));
     	    linebyline[NL][j]=toupper(caracter);
 	    //printf("CHAR:: 0x%X\n",linebyline[NL][j]);
 	    j++;
-	}
-	else
-	{
-	    NL++;
-	    j=0;
-	}
+        }
+        else
+        {
+            NL++;
+            j=0;
+        }
     }
+    NL+=1;
     print_buffer_line();
     if (!verificar_dosp())
     	ReadLBL();
     else
     {
-	printf("Puede que haya una etiqueta\n");
-	choose_ind_emb();
+        printf("Puede que haya una etiqueta\n");
+        choose_ind_emb();
     }
 
 
@@ -95,7 +108,7 @@ void ReadLBL()
     printf("NL:: %d\n",NL);
     	for(i=0;i<NL;i++)
     	{
-	   view_line_data(linebyline[i],i);
+            view_line_data(linebyline[i],i);
     	}
     	Nlines=NL-1;
 }
