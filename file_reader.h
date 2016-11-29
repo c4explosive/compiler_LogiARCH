@@ -163,7 +163,8 @@ void create__write_archivo(const char arch[])
     }
     else
     {*/
-    	archivo=fopen(arch,"wr");
+    printf("where save:: %s\n",arch);
+    archivo=fopen(arch,"w+");
 	fprintf(archivo,"%s","");
 	fprintf(archivo,"%s",data_inHEX);
 	//printf("NULL\n");

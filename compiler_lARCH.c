@@ -117,11 +117,6 @@ int main(int argc, char * argv[])
    asignacion_ins();
    int i;
 
-   /*view_line_data("  			LUI R15 89 						",0);
-   printf("\n");
-   Nlines++;
-   view_line_data("LI R3 253   ",1);*/
-
    read_archivo(argv[1]);
    put_fileheader();
    check_if_has_syntaxe();
