@@ -54,6 +54,8 @@ void debug_a_string(const char * string); //For view strings in HEX
 void print_labelLines(); //print array structure of labelLine[]
 int where_is_this_label(const char * string);
 
+void filter_ins(const char * string,char ** getstring);
+
 void print_buffer_line()
 {
     int i;
@@ -119,6 +121,7 @@ void read_lineBline()
     {
         printf("Puede que haya una etiqueta\n");
         choose_ind_emb();
+        //Aqui va ReadLBL de nuevo
     }
 
 
@@ -160,9 +163,18 @@ void choose_ind_emb()
             z++;
         }
     }
+    z=0;
+    for(i=0;i<nLabelTag;i++)
+    {
+        if(labelLine[i].type==1)
+        {
+            labelLine[i].line=label2typeline[z];
+            z++;
+        }
+    }
 
     print_labelLines();
-    //replace_labels_for_numbers();
+    replace_labels_for_numbers();
     print_buffer_line();
 }
 
@@ -267,7 +279,34 @@ void col_line_ind2nd(int y)
 
 void col_line_emb2nd(int y)
 {
-    printf("I:::: %d\n",labelLine[y].line);
+    //printf("I:::: %d\n",labelLine[y].line);
+    int h,i,SA;
+    char backup[200];
+    char caracter;
+    char * whR;
+    SA=1;
+    h=labelLine[y].line;
+    backup[strlen(linebyline[h])]=0x20;
+    char ** data=arraystring_init(data,1,34);
+    for(i=0;i<strlen(linebyline[h]);i++)
+    {
+        caracter=linebyline[h][i];
+        linebyline[h][i]=0x20;
+        if(caracter==0x3a)
+            break;
+    }
+    filter_ins(linebyline[h],data);
+    for(i=0;i<strlen(*data);i++)
+    {
+        linebyline[h][i]=data[0][i];
+    }
+    linebyline[h][i]='\0';
+    //debug_a_string(linebyline[h]);
+    /*printf("Backup:: \n");
+    debug_a_string(backup);*/
+
+    label2typeline[howmany2typel]=h;
+    howmany2typel++;
     printf("Took 2nd emb.\n");
 }
 

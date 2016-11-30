@@ -10,5 +10,5 @@ jmp ds
 li	r6	128
 ty:
 and	r3	r1 r6
-cmp	r3	r10
+pu: cmp	r3	r10
 or R4 R5 r5
