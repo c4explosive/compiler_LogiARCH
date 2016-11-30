@@ -1,7 +1,7 @@
-ds: 
+ds:
 li	r10	0
 li	r11	1
-li	r0	0
+pwr: li	r0	0      
 li	r1	80
 li	r2	7
 li	r6	128

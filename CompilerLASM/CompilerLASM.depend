@@ -1,10 +1,10 @@
 # depslib dependency file v1.0
-1480376573 source:c:\users\a-ero\files_org_a\compiler_larch.c
+1480477523 source:c:\users\a-ero\files_org_a\compiler_larch.c
 	"file_reader.h"
 	"text_utils.h"
 	"translator.h"
 
-1480378876 c:\users\a-ero\files_org_a\file_reader.h
+1480479279 c:\users\a-ero\files_org_a\file_reader.h
 	<stdio.h>
 	<stdlib.h>
 	<string.h>
@@ -13,7 +13,7 @@
 
 1480379476 c:\users\a-ero\files_org_a\memory_things.h
 
-1480376574 c:\users\a-ero\files_org_a\text_utils.h
+1480479456 c:\users\a-ero\files_org_a\text_utils.h
 
 1480372341 c:\users\a-ero\files_org_a\translator.h
 

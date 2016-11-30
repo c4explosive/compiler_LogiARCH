@@ -15,7 +15,7 @@ int NL=0;
 int isok=0;
 int Nlines=0;
 
-void view_line_data(const char * string,int y);
+void view_line_data(const char * string,int y,int mode);
 void check_if_has_syntaxe(); //check for error in syntaxis in block wothout colons.
 void translate(); //translator::translate()
 void put_fileheader(); //Put the ARCH_HEADER (v2.0 raw)
@@ -30,25 +30,27 @@ void ReadLBL(); //Go to text_utils::view_line_data()
 
 void print_buffer_line(); //Print lines in buffer (lineByline array)
 void clean_buffer_line(); //Clean buffer for new use
+void debug_a_string(const char * string); //For view strings in HEX
 
 void print_buffer_line()
 {
     int i;
+    printf("Buffer Lines::\n");
     for(i=0;i<NL;i++)
 	    printf("Line %d: %s\n",i,linebyline[i]);
 }
 
 void where_lines_are_colons()
 {
-    int i;
+    int i,j;
     char * pch;
     for(i=0;i<NL;i++)
     {
         pch=strchr(linebyline[i],0x3a);
         if(pch != NULL)
         {
-            whereAreColons[0][i]=i;
-            whereAreColons[1][i]=pch-linebyline[i];
+            whereAreColons[0][NumOfdots]=i;
+            whereAreColons[1][NumOfdots]=pch-linebyline[i];
             NumOfdots++;
         }
 
@@ -57,7 +59,11 @@ void where_lines_are_colons()
     //print the list of columns
     for (i=0;i<NumOfdots;i++)
     {
-        printf("LINE:: %d have colon in %d\n",whereAreColons[0][i],whereAreColons[1][i]);
+        //AQUÍ VA EL ASUNTO
+        view_line_data(linebyline[whereAreColons[0][i]],whereAreColons[0][i],1);
+        printf("LINE:: %d have colon in %d and end of string have: %d :: %s\n",whereAreColons[0][i],whereAreColons[1][i],
+               strlen(linebyline[whereAreColons[0][i]])-1,linebyline[whereAreColons[0][i]]);
+        debug_a_string(linebyline[whereAreColons[0][i]]);
     }
 
 }
@@ -67,7 +73,7 @@ void read_lineBline()
     int i,j;
     j=0;
     char caracter;
-    printf("RBL: %d\n",strlen(datass));
+    //printf("RBL: %d\n",strlen(datass));
     for(i=0;i<strlen(datass);i++)
     {
         caracter=datass[i];
@@ -85,7 +91,7 @@ void read_lineBline()
         }
     }
     NL+=1;
-    print_buffer_line();
+    //print_buffer_line();
     if (!verificar_dosp())
     	ReadLBL();
     else
@@ -99,7 +105,13 @@ void read_lineBline()
 
 void choose_ind_emb()
 {
+    int i;
+    //print_buffer_line();
+    where_lines_are_colons();
+    /*for(i=0;i<NumOfdots;i++) //Loop for each dot, save the line
+    {
 
+    }*/
 }
 
 void ReadLBL()
@@ -108,7 +120,7 @@ void ReadLBL()
     printf("NL:: %d\n",NL);
     	for(i=0;i<NL;i++)
     	{
-            view_line_data(linebyline[i],i);
+            view_line_data(linebyline[i],i,0);
     	}
     	Nlines=NL-1;
 }
