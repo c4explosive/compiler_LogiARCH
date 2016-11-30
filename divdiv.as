@@ -1,9 +1,14 @@
 ds:
 li	r10	0
-li	r11	1
+pr: li	r11	1
 pwr: li	r0	0      
 li	r1	80
+op:
 li	r2	7
+st:
+jmp ds
 li	r6	128
+ty:
 and	r3	r1 r6
 cmp	r3	r10
+or R4 R5 r5
