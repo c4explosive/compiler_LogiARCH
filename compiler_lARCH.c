@@ -118,9 +118,10 @@ int main(int argc, char * argv[])
    int i;
 
    read_archivo(argv[1]);
-   /*put_fileheader();
+   put_fileheader();
    check_if_has_syntaxe();
    translate();
-   create__write_archivo(argv[2]);*/
+   fix_O_to_0();
+   create__write_archivo(argv[2]);
    return 0;
 }

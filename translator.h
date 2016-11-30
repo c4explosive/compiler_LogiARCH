@@ -199,7 +199,7 @@ void translate()
 	    caractt=traduction[0][z];
 	    //printf("D%d:: 0x%X\n",z,caractt);
 	    if(caractt==0x20)
-		traduction[0][z]='0';
+            traduction[0][z]='0';
 	}
 	//printf("INSS::: %s\n",linfilT[i].words[0]);
 	//printf("OVERDRIVE::: %s\n",traduction[0]);
@@ -210,4 +210,16 @@ void translate()
 	sprintf(traduction[0],"");
     }
 
+}
+
+void fix_O_to_0()
+{
+    int i;
+    char caracter;
+    for(i=0;i<strlen(data_inHEX);i++)
+    {
+        caracter=data_inHEX[i];
+        if(caracter == 0x4f)
+            data_inHEX[i]=0x30;
+    }
 }

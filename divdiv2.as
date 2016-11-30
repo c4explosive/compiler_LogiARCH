@@ -18,7 +18,7 @@ div:    li r8 254
 		sl r4 r7     
 		sub r5 r3 r2 
 		slt r10 r5   
-		bra div1     
+		bra div1  	
         or r7 r4 r10 
         add r4 r7 r11
         or r3 r5 r10 

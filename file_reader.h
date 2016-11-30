@@ -121,7 +121,7 @@ void read_lineBline()
     {
         printf("Puede que haya una etiqueta\n");
         choose_ind_emb();
-        //Aqui va ReadLBL de nuevo
+        ReadLBL();
     }
 
 
@@ -202,12 +202,20 @@ void general_delim(int y)
 
 void replace_labels_for_numbers()
 {
-    int i,j,k;
+    int i,j,k,m;
     char * whl;
+    char * zhl;
     char rlabel[20];
+    char candidate[20];
+    char caracter;
+    char ** data=arraystring_init(data,1,34);
     for(i=0;i<NL;i++)
     {
         //printf("Line %d: %s\n",i,linebyline[i]);
+        filter_ins(linebyline[i],data);
+        for(m=0;m<strlen(*data);m++)
+            linebyline[i][m]=data[0][m];
+        linebyline[i][m]='\0';
         for(j=0;j<nLabelTag;j++)
         {
             sprintf(rlabel,"%d",labelLine[j].line);
@@ -216,10 +224,23 @@ void replace_labels_for_numbers()
                 //printf("I: %d :: lL: %d\n",i,labelLine[k].line);
                 if(whl != NULL)
                 {
-                        //printf("LINE~ %s\n",linebyline[i]);
-                        //printf("index: %d\n",whl-linebyline[i]);
-                        strncpy(whl,rlabel,strlen(rlabel));
-                        linebyline[i][(int)(whl-linebyline[i])+strlen(rlabel)]='\0';
+                        //printf("SUPLABEL:: %s\n",labelLine[j].name);
+                        //printf("POINTER:: 0x%x\n",*(whl+strlen(labelLine[j].name)+1));
+                        //////////
+                        m=0;
+                        for(zhl=whl;*zhl!='\0';zhl++)
+                        {
+                            candidate[m]=*zhl;
+                            m++;
+                        }
+                        candidate[m]='\0';
+                        //printf("CANDIDATE: %s\n",candidate);
+
+                        if( strcmp(candidate,labelLine[j].name) == 0 )
+                        {
+                            strncpy(whl,rlabel,strlen(rlabel));
+                            linebyline[i][(int)(whl-linebyline[i])+strlen(rlabel)]='\0';
+                        }
                 }
 
         }
