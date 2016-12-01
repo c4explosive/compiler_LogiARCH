@@ -1,7 +1,7 @@
 #include "file_reader.h"
 #include "text_utils.h"
 #include "translator.h"
-void Null();
+
 void asignacion_ins()
 {
 
@@ -103,8 +103,8 @@ void asignacion_ins()
     	sprintf(insn[i].inst,"%s",nmonicos[i]);
     	insn[i].hex_code=hex_codes[i];
     	insn[i].warguments=wargsm[i];
-	sprintf(insn[i].format,"%s",forms[i]);
-	sprintf(insn[i].uformat,"%s",uforms[i]);
+        sprintf(insn[i].format,"%s",forms[i]);
+        sprintf(insn[i].uformat,"%s",uforms[i]);
     }
 
 
@@ -112,16 +112,14 @@ void asignacion_ins()
 
 int main(int argc, char * argv[])
 {
-
    //create__write_archivo("dats.txt");
    asignacion_ins();
    int i;
-
    read_archivo(argv[1]);
    put_fileheader();
    check_if_has_syntaxe();
    translate();
-   fix_O_to_0();
+   //fix_O_to_0();
    create__write_archivo(argv[2]);
    return 0;
 }

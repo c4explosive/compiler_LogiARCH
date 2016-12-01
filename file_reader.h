@@ -4,11 +4,23 @@
 #include <ctype.h>
 #include "memory_things.h"
 
+#define N 16
+typedef struct instruct
+{
+    char inst[3];
+    int hex_code;
+    int warguments;
+    char format[5];
+    char uformat[6];
+} instruction;
+instruction insn[N];
+
 FILE * archivo;
 char datass[10000]="";
 int whereAreColons[255][255];
 int NumOfdots;
 char linebyline[255][200];
+char linebyline_alt[255][200];
 char data[28];
 char data_inHEX[10000];
 int NL=0;
@@ -53,6 +65,13 @@ void clean_buffer_line(); //Clean buffer for new use
 void debug_a_string(const char * string); //For view strings in HEX
 void print_labelLines(); //print array structure of labelLine[]
 int where_is_this_label(const char * string);
+int is_only_spaces(const char * string); //1 if only space or 0 if not only space
+void fold_void_lines(); //verify with function above and copy the new buffer linebyline
+void verify_is_morecol(); //verify more than : colons
+void same_label(); //verify have same label
+void label_keyword(); //verify label is keyword
+
+int NLA=0;
 
 void filter_ins(const char * string,char ** getstring);
 
@@ -96,6 +115,8 @@ void read_lineBline()
     int i,j;
     j=0;
     char caracter;
+    int consider=1;
+    char anterior;
     //printf("RBL: %d\n",strlen(datass));
     for(i=0;i<strlen(datass);i++)
     {
@@ -103,28 +124,129 @@ void read_lineBline()
         if(caracter != '\n')
         {
 	    //printf("chart::: %c\n",toupper(caracter));
-    	    linebyline[NL][j]=toupper(caracter);
+            if(caracter!=';' && consider==1)
+                linebyline[NL][j]=toupper(caracter);
+            else
+                {
+                    consider=0;
+                }
 	    //printf("CHAR:: 0x%X\n",linebyline[NL][j]);
 	    j++;
         }
         else
         {
+            consider=1;
             NL++;
             j=0;
         }
     }
     NL+=1;
+
+    fold_void_lines();
+
     print_buffer_line();
-    if (!verificar_dosp())
-    	ReadLBL();
-    else
+    if (verificar_dosp())
     {
         printf("Puede que haya una etiqueta\n");
         choose_ind_emb();
-        ReadLBL();
+        //verify is more than :
+        verify_is_morecol();
+        //have the same line
+        same_label();
+        //label is keyword
+        label_keyword();
     }
 
 
+    ReadLBL();
+
+}
+
+void verify_is_morecol()
+{
+    int colon_num=0;
+    int i,j;
+    for(i=0;i<NL;i++)
+    {
+        for(j=0;j<strlen(linebyline[i]);j++)
+        {
+            if(linebyline[i][j]== 0x3a)
+            {
+                printf("Hay más de un caracter :\n... Abortando...");
+                //printf("Linea: %d\n",i);
+                exit(1);
+            }
+
+        }
+        colon_num=0;
+    }
+}
+
+void same_label()
+{
+    int i, j;
+    for(i=0;i<nLabelTag;i++)
+    {
+        for(j=0;j<nLabelTag;j++)
+        {
+            if((strcmp(labelLine[i].name,labelLine[j].name)==0) && (i != j))
+            {
+                printf("Error: Hay una etiqueta repetida: %s... Abortando...",labelLine[i].name);
+                //printf("Línea: %d\n",labelLine[i].line);
+                exit(1);
+            }
+        }
+    }
+}
+
+void label_keyword()
+{
+    int i, j;
+    for(i=0;i<nLabelTag;i++)
+    {
+        for(j=0;j<N;j++)
+        {
+            if(strcmp(labelLine[i].name,insn[j].inst)==0)
+            {
+                printf("Error: Una etiqueta es un nemónico: %s... Abortando...\n",labelLine[i].name);
+               // printf("Línea: %d\n",labelLine[i].line);
+                exit(1);
+            }
+        }
+    }
+}
+
+
+int is_only_spaces(const char * string)
+{
+    int i;
+    for(i=0;i<strlen(string);i++)
+    {
+        if(string[i] != 0x20 && string[i] != '\n' && string[i] != 0x09 )
+            return 0;
+    }
+    return 1;
+}
+
+void fold_void_lines()
+{
+    int i;
+    NLA=0;
+    for(i=0;i<NL;i++)
+    {
+        if(is_only_spaces(linebyline[i]) == 0)
+        {
+            sprintf(linebyline_alt[NLA],"%s",linebyline[i]);
+            NLA++;
+        }
+    }
+    for(i=0;i<NL;i++)
+        sprintf(linebyline[i],"");
+    NL=NLA;
+    for(i=0;i<NL;i++)
+    {
+        sprintf(linebyline[i],"%s",linebyline_alt[i]);
+    }
 }
 
 void choose_ind_emb()
@@ -347,19 +469,20 @@ void read_archivo(const char data[])
 {
     int ch;
     int i=0;
+    //char anterior;
     archivo=fopen(data,"r");
 
     while(1)
     {
     	ch=fgetc(archivo);
-	if(ch!=EOF)
-	{
-	    datass[i]=ch;
-	    //printf("%c",ch);
-	}
-	else
-	    break;
-	i++;
+        if(ch!=EOF)
+        {
+                datass[i]=ch;
+                i++;
+            //printf("%c",ch);
+        }
+        else
+            break;
     }
     fclose(archivo);
     //printf("Datos\n %s\n",datass);

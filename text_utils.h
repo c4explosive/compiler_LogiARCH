@@ -1,12 +1,4 @@
-#define N 16
-typedef struct instruct
-{
-    char inst[3];
-    int hex_code;
-    int warguments;
-    char format[5];
-    char uformat[6];
-} instruction;
+
 
 typedef struct linesw
 {
@@ -15,7 +7,7 @@ typedef struct linesw
     int count;
 } linesfilter;
 
-instruction insn[N];
+
 linesfilter linfilT[0xFF];
 linesfilter *MlinfilT[0xFF]; //For mirror linfilT data (NEED INITIALIZIED)
 

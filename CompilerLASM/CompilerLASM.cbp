@@ -11,7 +11,7 @@
 				<Option object_output="obj/Debug/" />
 				<Option type="1" />
 				<Option compiler="gcc" />
-				<Option parameters="C:\Users\a-ero\Files_ORG_A\divdiv.as  C:\Users\a-ero\Files_ORG_A\dix2.asm" />
+				<Option parameters="C:\Users\a-ero\Files_ORG_A\drop.txt  C:\Users\a-ero\Files_ORG_A\drop1.asm" />
 				<Compiler>
 					<Add option="-g" />
 				</Compiler>

@@ -82,7 +82,7 @@ char get_register_nums(const char * string)
     else if ( strcmp(string,"R15") == 0)
 	return 'F';
     else if ( strcmp(string,"R0") == 0)
-	return 'O';
+	return '0';
 
 }
 
