@@ -11,26 +11,26 @@ typedef struct linesw
 linesfilter linfilT[0xFF];
 linesfilter *MlinfilT[0xFF]; //For mirror linfilT data (NEED INITIALIZIED)
 
-int count_words(const char * string)
+int count_words(const char * stringTs)
 {
-    /*printf("LAST LETTER: 0x%X\n",string[strlen(string)-1]);*/
-    if(!strcmp(string,""))
+    /*printf("LAST LETTER: 0x%X\n",stringTs[strlen(stringTs)-1]);*/
+    if(!strcmp(stringTs,""))
 	return 0;
     int cambios,i=0;
     int palabras;
     char anterior=0x20;
     char caracter;
 
-    for(i=0;i<strlen(string);i++)
+    for(i=0;i<strlen(stringTs);i++)
     {
-	caracter=string[i];
+	caracter=stringTs[i];
 	if(caracter == 0x09)
 	    caracter=0x20;
 	if(caracter == 0x20 && anterior != 0x20)
 	   cambios++;
 	anterior=caracter;
     }
-    caracter=string[strlen(string)-1];
+    caracter=stringTs[strlen(stringTs)-1];
     if(caracter==0x20 || caracter==0x09)
 	cambios--;
 
@@ -39,32 +39,32 @@ int count_words(const char * string)
 
 }
 
-void filter_ins(const char * string,char ** getstring)
+void filter_ins(const char * stringTs,char ** getstringTs)
 {
-    if(!strcmp(string,""))
+    if(!strcmp(stringTs,""))
 	return ;
     int cambios,i=0;
     int palabras;
     char anterior=0x20;
     char caracter;
-    char ** insOPt= arraystring_init(insOPt,1,80);
+    char ** insOPt= arraystringTs_init(insOPt,1,80);
 
     /*for(i=0;i<80;i++)
     {
         insOPt[0][i]='H';
     }
-    for(i=0;i<strlen(*getstring);i++)
+    for(i=0;i<strlen(*getstringTs);i++)
     {
-        *getstring[i]='H';
+        *getstringTs[i]='H';
     }*/
     i=0;
     int spccount=0;
     int haveletter=0;
     int j=0;
-    //printf("STRRTLEN::::: %d\n",strlen(string));
-    for(i=0;i<strlen(string);i++)
+    //printf("STRRTLEN::::: %d\n",strlen(stringTs));
+    for(i=0;i<strlen(stringTs);i++)
     {
-        caracter=string[i];
+        caracter=stringTs[i];
         //printf("CHAR::: %c\n",caracter);
         if(caracter == 0x09)
             caracter=0x20;
@@ -73,7 +73,7 @@ void filter_ins(const char * string,char ** getstring)
         {
             continue;
         }
-        if((caracter==0x20 && i==strlen(string)-1))
+        if((caracter==0x20 && i==strlen(stringTs)-1))
             break;
 
         if ( caracter!=0x20)
@@ -99,30 +99,30 @@ void filter_ins(const char * string,char ** getstring)
             insOPt[0][j-1]='\0';
     //printf("UCHAR:: 0x%x\n",insOPt[0][j-1]);
     //printf("INSOPT::: %s\n",insOPt[0]);
-	//debug_a_string(insOPt[0]);
-    *getstring=insOPt[0];
-    //printf("GETSTRING:: %s\n",*getstring);
+	//debug_a_stringTs(insOPt[0]);
+    *getstringTs=insOPt[0];
+    //printf("GETstringTs:: %s\n",*getstringTs);
 
 }
 
-void debug_a_string(const char * string)
+void debug_a_stringTs(const char * stringTs)
 {
     int i;
-    printf("word::: %s\n",string);
-    for (i=0;i<strlen(string);i++)
-        printf("0x%x ",string[i]);
+    printf("word::: %s\n",stringTs);
+    for (i=0;i<strlen(stringTs);i++)
+        printf("0x%x ",stringTs[i]);
     printf("\n");
 }
 
 
-void view_line_data(const char * string,int y, int mode)
+void view_line_data(const char * stringTs,int y, int mode)
 {
     int i;
     int word=0;
     int letter=0;
     char caracter;
-    char ** data=arraystring_init(data,1,34);
-    filter_ins(string,data);
+    char ** data=arraystringTs_init(data,1,34);
+    filter_ins(stringTs,data);
     if(mode == 0)
         linfilT[y].count=0;
     else
@@ -130,9 +130,9 @@ void view_line_data(const char * string,int y, int mode)
         for(i=0;i<200;i++) //rm data in this line for copy new data
             linebyline[y][i]='\0';
     }
-    //printf("String & Data:: %s & %s\n",string,*data);
-    //debug_a_string(string);
-    //debug_a_string(*data);
+    //printf("stringTs & Data:: %s & %s\n",stringTs,*data);
+    //debug_a_stringTs(stringTs);
+    //debug_a_stringTs(*data);
 
     //printf("MyStrlen::: %d\n",strlen(*data));
     for(i=0;i<strlen(*data);i++)

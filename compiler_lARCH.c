@@ -2,6 +2,12 @@
 #include "text_utils.h"
 #include "translator.h"
 
+/* TODO::
+*Multiple Lines of errors (stack?).
+*IDE in Qt, test this files in Qt.
+*/
+
+
 void asignacion_ins()
 {
 

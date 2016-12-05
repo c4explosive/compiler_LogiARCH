@@ -20,14 +20,24 @@ char datass[10000]="";
 int whereAreColons[255][255];
 int NumOfdots;
 char linebyline[255][200];
+char linebyline2[255][200];
 char linebyline_alt[255][200];
 char data[28];
 char data_inHEX[10000];
 int NL=0;
+int NL2=0;
 int nLabelTag=0;
 int isok=0;
 int Nlines=0;
 int howManylinesdel=0;
+int lineINLINE[2][0xFF];
+/* lINL[0][lINL]=labelLine[i].line;
+            lINL[1][lINL]=label1typeline[z];*/ //Remember
+int lINL=0;
+
+int replace_REALline(const char *);
+
+int havelabel=0;
 
 typedef struct LabelTag
 {
@@ -43,7 +53,7 @@ int howmany1typel;
 int label2typeline[200]; //for save true lines to jump (2nd type)
 int howmany2typel;
 
-void view_line_data(const char * string,int y,int mode);
+void view_line_data(const char * stringTs,int y,int mode);
 void check_if_has_syntaxe(); //check for error in syntaxis in block wothout colons.
 void translate(); //translator::translate()
 void put_fileheader(); //Put the ARCH_HEADER (v2.0 raw)
@@ -62,18 +72,93 @@ void ReadLBL(); //Go to text_utils::view_line_data()
 
 void print_buffer_line(); //Print lines in buffer (lineByline array)
 void clean_buffer_line(); //Clean buffer for new use
-void debug_a_string(const char * string); //For view strings in HEX
+void debug_a_stringTs(const char * stringTs); //For view stringTss in HEX
 void print_labelLines(); //print array structure of labelLine[]
-int where_is_this_label(const char * string);
-int is_only_spaces(const char * string); //1 if only space or 0 if not only space
+int where_is_this_label(const char * stringTs);
+int is_only_spaces(const char * stringTs); //1 if only space or 0 if not only space
 void fold_void_lines(); //verify with function above and copy the new buffer linebyline
 void verify_is_morecol(); //verify more than : colons
 void same_label(); //verify have same label
 void label_keyword(); //verify label is keyword
+void the_labels_appears(); //verify if method appear in jmps or bra
 
 int NLA=0;
 
-void filter_ins(const char * string,char ** getstring);
+void filter_ins(const char * stringTs,char ** getstringTs);
+
+void the_labels_appears()
+{
+    int i,j,k,m;
+    char * whl;
+    char * zhl;
+    int havejmpbra=0;
+    char candidate[20];
+    char caracter;
+    int inuse=0;
+    char ** data=arraystringTs_init(data,1,34);
+    for(i=0;i<NL;i++)
+    {
+        filter_ins(linebyline[i],data);
+        for(m=0;m<strlen(*data);m++)
+            linebyline[i][m]=data[0][m];
+        linebyline[i][m]='\0';
+        char jmpbra[2][20]={"JMP","BRA"};
+        for(m=0;m<2;m++)
+        {
+            whl=strstr(linebyline[i],jmpbra[m]);
+            //printf("WHLL::: 0x%x with %s in %s\n",whl,jmpbra[m],linebyline[i]);
+            if(!(whl==NULL))
+            {
+                havejmpbra=1;
+                break;
+            }
+        }
+        if(havejmpbra==1)
+        {
+
+            //printf("Line: %s\n",linebyline[i]);
+            for(j=0;j<nLabelTag;j++)
+            {
+
+                whl=strstr(linebyline[i],labelLine[j].name);
+                //printf("STRSTR: 0x%p\n",whl);
+
+                    //printf("I: %d :: lL: %d\n",i,labelLine[k].line);
+                    if(whl != NULL)
+                    {
+
+                            printf("SUPLABEL:: %s\n",labelLine[j].name);
+                            //printf("POINTER:: 0x%x\n",*(whl+strlen(labelLine[j].name)+1));
+                            //////////
+                            m=0;
+                            for(zhl=whl;*zhl!='\0';zhl++)
+                            {
+                                candidate[m]=*zhl;
+                                m++;
+                            }
+                            candidate[m]='\0';
+                            printf("CANDIDATE: %s\n",candidate);
+
+                            if(strcmp(candidate,labelLine[j].name) == 0)
+                            {
+                                inuse=1;
+                            }
+                    }
+
+            }
+
+            if(inuse==0 && havejmpbra==1)
+            {
+                 printf("Error: Hay una etiqueta que no está en uso en la línea:\n %s \n Abortando...",linebyline[i]);
+                 exit(1);
+            }
+
+        }
+        havejmpbra=0;
+        inuse=0;
+    }
+
+}
 
 void print_buffer_line()
 {
@@ -103,9 +188,9 @@ void where_lines_are_colons()
     for (i=0;i<NumOfdots;i++)
     {
         view_line_data(linebyline[whereAreColons[0][i]],whereAreColons[0][i],1); //filter lines with colons
-        /*printf("LINE:: %d have colon in %d and end of string have: %d :: %s\n",whereAreColons[0][i],whereAreColons[1][i],
+        /*printf("LINE:: %d have colon in %d and end of stringTs have: %d :: %s\n",whereAreColons[0][i],whereAreColons[1][i],
                strlen(linebyline[whereAreColons[0][i]])-1,linebyline[whereAreColons[0][i]]);
-        debug_a_string(linebyline[whereAreColons[0][i]]);*/
+        debug_a_stringTs(linebyline[whereAreColons[0][i]]);*/
     }
 
 }
@@ -125,7 +210,10 @@ void read_lineBline()
         {
 	    //printf("chart::: %c\n",toupper(caracter));
             if(caracter!=';' && consider==1)
+            {
                 linebyline[NL][j]=toupper(caracter);
+                linebyline2[NL2][j]=toupper(caracter);
+            }
             else
                 {
                     consider=0;
@@ -137,6 +225,7 @@ void read_lineBline()
         {
             consider=1;
             NL++;
+            NL2++;
             j=0;
         }
     }
@@ -144,9 +233,10 @@ void read_lineBline()
 
     fold_void_lines();
 
-    print_buffer_line();
+    //print_buffer_line();
     if (verificar_dosp())
     {
+
         printf("Puede que haya una etiqueta\n");
         choose_ind_emb();
         //verify is more than :
@@ -166,14 +256,18 @@ void verify_is_morecol()
 {
     int colon_num=0;
     int i,j;
+    int line;
+    char strns[50]="";
+
     for(i=0;i<NL;i++)
     {
+        line=replace_REALline(linebyline[i]);
         for(j=0;j<strlen(linebyline[i]);j++)
         {
             if(linebyline[i][j]== 0x3a)
             {
-                printf("Hay más de un caracter :\n... Abortando...");
-                //printf("Linea: %d\n",i);
+                printf("Hay más de un caracter \':\'\n... Abortando...");
+                printf("Linea: %d\n",line);
                 exit(1);
             }
 
@@ -192,7 +286,7 @@ void same_label()
             if((strcmp(labelLine[i].name,labelLine[j].name)==0) && (i != j))
             {
                 printf("Error: Hay una etiqueta repetida: %s... Abortando...",labelLine[i].name);
-                //printf("Línea: %d\n",labelLine[i].line);
+                //printf("Línea: %d\n",line);
                 exit(1);
             }
         }
@@ -217,12 +311,12 @@ void label_keyword()
 }
 
 
-int is_only_spaces(const char * string)
+int is_only_spaces(const char * stringTs)
 {
     int i;
-    for(i=0;i<strlen(string);i++)
+    for(i=0;i<strlen(stringTs);i++)
     {
-        if(string[i] != 0x20 && string[i] != '\n' && string[i] != 0x09 )
+        if(stringTs[i] != 0x20 && stringTs[i] != '\n' && stringTs[i] != 0x09 )
             return 0;
     }
     return 1;
@@ -260,15 +354,15 @@ void choose_ind_emb()
     {
         whCol=whereAreColons[1][i];
         enLine=strlen(linebyline[whereAreColons[0][i]])-1;
-        printf("LINE:: %d have colon in %d and end of string have: %d :: %s\n",whereAreColons[0][i],whCol,
-               enLine,linebyline[whereAreColons[0][i]]);
-        debug_a_string(linebyline[whereAreColons[0][i]]);
+        //printf("LINE:: %d have colon in %d and end of stringTs have: %d :: %s\n",whereAreColons[0][i],whCol,
+        //       enLine,linebyline[whereAreColons[0][i]]);
+        //debug_a_stringTs(linebyline[whereAreColons[0][i]]);
         if(whCol == enLine)
             col_line_ind(i);
         else
             col_line_emb(i);
     }
-    print_labelLines();
+    //print_labelLines();
     for(i=0;i<nLabelTag;i++) //Loop for modify the general structure and delete labels (2nd)
     {
         if(labelLine[i].type == 0)
@@ -281,6 +375,10 @@ void choose_ind_emb()
     {
         if(labelLine[i].type==0)
         {
+            /*lineINLINE[0][lINL]=labelLine[i].line;
+            lineINLINE[1][lINL]=label1typeline[z];
+            lINL++;*/
+            havelabel=1;
             labelLine[i].line=label1typeline[z];
             z++;
         }
@@ -295,9 +393,12 @@ void choose_ind_emb()
         }
     }
 
-    print_labelLines();
+    //print_labelLines();
+    //The label needs to appear in JMPs or BRAs
+    the_labels_appears();
+    //Replace the found labels into line numbers
     replace_labels_for_numbers();
-    print_buffer_line();
+    //print_buffer_line();
 }
 
 void print_labelLines()
@@ -330,7 +431,7 @@ void replace_labels_for_numbers()
     char rlabel[20];
     char candidate[20];
     char caracter;
-    char ** data=arraystring_init(data,1,34);
+    char ** data=arraystringTs_init(data,1,34);
     for(i=0;i<NL;i++)
     {
         //printf("Line %d: %s\n",i,linebyline[i]);
@@ -371,12 +472,12 @@ void replace_labels_for_numbers()
 
 }
 
-int where_is_this_label(const char * string) //TODO: delete this function??
+int where_is_this_label(const char * stringTs) //TODO: delete this function??
 {
     int i;
     for(i=0;i<nLabelTag;i++)
     {
-        if (strcmp(string,labelLine[i].name) == 0)
+        if (strcmp(stringTs,labelLine[i].name) == 0)
             return i;
     }
     return -1;
@@ -389,7 +490,7 @@ void col_line_ind(int y)
     labelLine[nLabelTag].line=whereAreColons[0][y];
     labelLine[nLabelTag].type=0;
     nLabelTag++;
-    printf("Took individual Line.\n");
+    //printf("Took individual Line.\n");
 }
 
 void col_line_emb(int y)
@@ -398,19 +499,22 @@ void col_line_emb(int y)
     labelLine[nLabelTag].line=whereAreColons[0][y];
     labelLine[nLabelTag].type=1;
     nLabelTag++;
-    printf("Took embedded Line.\n");
+    //printf("Took embedded Line.\n");
 }
 
 void col_line_ind2nd(int y)
 {
     int i;
-    printf("Took 2nd ind.\n");
+    //printf("Took 2nd ind.\n");
     sprintf(linebyline[labelLine[y].line],"");
     for(i=labelLine[y].line;i<NL-1;i++)
     {
         sprintf(linebyline[i],"%s",linebyline[i+1]);
     }
     //printf("I:::: %d\n",labelLine[y].line);
+    lineINLINE[0][lINL]=whereAreColons[0][y];
+    lineINLINE[1][lINL]=labelLine[y].line;
+    lINL++;
     label1typeline[howmany1typel]=labelLine[y].line;
     howmany1typel++;
     for(i=0;i<nLabelTag;i++)
@@ -429,8 +533,11 @@ void col_line_emb2nd(int y)
     char * whR;
     SA=1;
     h=labelLine[y].line;
+    lineINLINE[0][lINL]=whereAreColons[0][y];
+    lineINLINE[1][lINL]=labelLine[y].line;
+    lINL++;
     backup[strlen(linebyline[h])]=0x20;
-    char ** data=arraystring_init(data,1,34);
+    char ** data=arraystringTs_init(data,1,34);
     for(i=0;i<strlen(linebyline[h]);i++)
     {
         caracter=linebyline[h][i];
@@ -444,19 +551,19 @@ void col_line_emb2nd(int y)
         linebyline[h][i]=data[0][i];
     }
     linebyline[h][i]='\0';
-    //debug_a_string(linebyline[h]);
+    //debug_a_stringTs(linebyline[h]);
     /*printf("Backup:: \n");
-    debug_a_string(backup);*/
+    debug_a_stringTs(backup);*/
 
     label2typeline[howmany2typel]=h;
     howmany2typel++;
-    printf("Took 2nd emb.\n");
+    //printf("Took 2nd emb.\n");
 }
 
 void ReadLBL()
 {
     int i;
-    printf("NL:: %d\n",NL);
+    //printf("NL:: %d\n",NL);
     	for(i=0;i<NL;i++)
     	{
             view_line_data(linebyline[i],i,0);
